@@ -5,6 +5,8 @@ import { db } from "./firebase";
 import {
   PINTAS,
   LIMITE_POR_CARTA,
+  COMODIN,
+  LIMITE_COMODINES,
   parsearNumero,
   nombreNumero,
   imagenCarta,
@@ -25,6 +27,16 @@ export function App(){
   const animBoton = useAnimationControls();
 
   function agregar() {
+    if (pinta === COMODIN) {
+      if (cartas.filter((c) => c.pinta === COMODIN).length >= LIMITE_COMODINES) {
+        setError(`Límite alcanzado: máximo ${LIMITE_COMODINES} comodines`);
+        return;
+      }
+      setError("");
+      setCartas([...cartas, { id: Date.now(), numero: 0, pinta: COMODIN }]);
+      animBoton.start({ scale: [1, 1.3, 1], rotate: [0, -8, 8, 0], transition: { duration: 0.4 } });
+      return;
+    }
     const n = parsearNumero(numero);
     if (!n) {
       setError("Número inválido (usa 1-13, A, J, Q o K)");
@@ -83,6 +95,7 @@ export function App(){
           {PINTAS.map((p) => (
             <option key={p} value={p}>{p}</option>
           ))}
+          <option value={COMODIN}>comodín (joker)</option>
         </select>
         <motion.button className="btn btn-primary" onClick={agregar} animate={animBoton}>
           Agregar
@@ -100,7 +113,7 @@ export function App(){
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, rotate: 90, scale: 0.5 }}
             >
-              <img src={imagenCarta(c.numero, c.pinta)} alt={`${nombreNumero(c.numero)} de ${c.pinta}`} width={90} />
+              <img src={imagenCarta(c.numero, c.pinta)} alt={c.pinta === COMODIN ? "comodín" : `${nombreNumero(c.numero)} de ${c.pinta}`} width={90} />
               <button
                 className="btn btn-danger btn-sm position-absolute top-0 end-0 py-0 px-1"
                 onClick={() => descartar(c.id)}
