@@ -1,2 +1,2 @@
-Diego Loyola Cuevas 
+Diego Loyola Cuevas - 
 Valentina Zuñiga Salamanca
