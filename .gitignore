@@ -21,3 +21,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# clave privada de Firebase Admin (no subir a GitHub)
+*firebase-adminsdk*.json
